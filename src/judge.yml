@@ -1,26 +1,38 @@
-version: 1
+version: 0.1
 protocols:
-  - name: client_custom_graphic_single,
-    description: "自定义单个",
-    cmd_id: 0xF101,
-    interface: ["clientGraphicSingle"],
-    stm32_receive: false,
-    stm32_send: true,
+  - name: game_status
+    description: "比赛状态数据"
+    interface: 
+      - gameStatus: 0x0001
+    stm32_receive: false
+    stm32_send: false
+    struct: |-
+      uint8_t game_type : 4;
+      uint8_t game_progress : 4; 
+      uint16_t stage_remain_time;
+      uint64_t SyncTimeStamp;
+  - name: client_custom_graphic_single
+    description: "客户端绘制一个图形"
+    interface: 
+      - clientGraphicDouble: 0xF101
+    stm32_receive: false
+    stm32_send: true
     struct: |-
       uint16_t              data_cmd_id;
       uint16_t              send_id;
       uint16_t              receiver_id;
-      graphic_data_struct_t grapic_data_struct;
-  - name: client_custom_graphic_double_t,
-    cmd_id: 0xF102,
-    interface: ["clientGraphicDouble"],
-    stm32_receive: false,
-    stm32_send: true,
+      graphic_data_struct grapic_data_struct;
+  - name: client_custom_graphic_double_t
+    description: "客户端绘制两个图形"
+    interface:
+      - clientGraphicDouble: 0xF102
+    stm32_receive: false
+    stm32_send: true
     struct: |-
       uint16_t              data_cmd_id;
       uint16_t              send_id;
       uint16_t              receiver_id;
-      graphic_data_struct_t grapic_data_struct[2];
+      graphic_data_struct grapic_data_struct[2];
 structs:
   - name: graphic_data_struct
     struct: |-
