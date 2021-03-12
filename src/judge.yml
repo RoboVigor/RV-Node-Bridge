@@ -1,40 +1,302 @@
-version: 0.1
+version: 1.0
 protocols:
   - name: game_status
     description: "比赛状态数据"
     interface: 
       - gameStatus: 0x0001
     stm32_receive: false
-    stm32_send: false
+    stm32_send: true
     struct: |-
       uint8_t game_type : 4;
       uint8_t game_progress : 4; 
       uint16_t stage_remain_time;
       uint64_t SyncTimeStamp;
+  - name: game_result
+    description: "比赛结果的数据"
+    interface:
+      - gameResult: 0x0002
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint8_t winner;
+  - name: game_robot_HP
+    description: "机器人血量数据"
+    interface:
+      - healthPoint: 0x0003
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint16_t red_1_robot_HP;
+      uint16_t red_2_robot_HP; 
+      uint16_t red_3_robot_HP; 
+      uint16_t red_4_robot_HP; 
+      uint16_t red_5_robot_HP; 
+      uint16_t red_7_robot_HP;
+      uint16_6 red_outpost_HP; 
+      uint16_t red_base_HP; 
+      uint16_t blue_1_robot_HP; 
+      uint16_t blue _2_robot_HP; 
+      uint16_t blue _3_robot_HP; 
+      uint16_t blue _4_robot_HP; 
+      uint16_t blue _5_robot_HP; 
+      uint16_t blue _7_robot_HP;
+      uint16_t blue_outpost_HP; 
+      uint16_t blue _base_HP; 
+  - name: dart_status
+    description: "飞镖发射状态"
+    interface: 
+      - dartStatus: 0x0004
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint8_t dart_belong; 
+      uint16_t stage_remaining_time;  
+  - name: ICRA_buff_debuff_zone_status
+    description: "人工智能挑战赛加成与惩罚区状态"
+    interface: 
+      - icraBuffDebuffZoneStatus: 0x0005
+    stm32_receive: false
+    stm32_send: false
+    struct: |-
+      uint8_t F1_zone_status:1; 
+      uint8_t F1_zone_buff_debuff_status:3; 
+      uint8_t F2_zone_status:1; 
+      uint8_t F2_zone_buff_debuff_status:3; 
+      uint8_t F3_zone_status:1; 
+      uint8_t F3_zone_buff_debuff_status:3; 
+      uint8_t F4_zone_status:1; 
+      uint8_t F4_zone_buff_debuff_status:3; 
+      uint8_t F5_zone_status:1; 
+      uint8_t F5_zone_buff_debuff_status:3; 
+      uint8_t F6_zone_status:1; 
+      uint8_t F6_zone_buff_debuff_status:3;
+      uint16_t red1_bullet_left;
+      uint16_t red2_bullet_left;
+      uint16_t blue1_bullet_left;
+      uint16_t blue2_bullet_left; 
+  - name: event_data
+    description: "场地事件数据"
+    interface: 
+      - eventData: 0x0101
+    stm32_receive: true
+    stm32_send: false
+    struct: |-
+      uint32_t event_type;
+  - name: supply_projectile_action
+    description: "补给站动作标识"
+    interface: 
+      - supply_Projectile_action: 0x0102
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint8_t supply_projectile_id; 
+      uint8_t supply_robot_id; 
+      uint8_t supply_projectile_step;
+      uint8_t supply_projectile_num; 
+  - name: referee_warning
+    description: "裁判警告信息"
+    interface: 
+      - referee_Warning: 0x0104
+    stm32_receive: true
+    stm32_send: false
+    struct: |-
+      uint8_t level; 
+      uint8_t foul_robot_id;   
+  - name: dart_remaining_time
+    description: "飞镖发射口倒计"
+    interface: 
+      - dart_Remaining_time: 0x0105
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint8_t dart_remaining_time;    
+  - name: game_robot_status
+    description: "比赛机器人状态"
+    interface: 
+      - game_Robot_status: 0x0201
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint8_t robot_id; uint8_t robot_level; 
+      uint16_t remain_HP; uint16_t max_HP; 
+      uint16_t shooter_id1_17mm_cooling_rate; 
+      uint16_t shooter_id1_17mm_cooling_limit;
+      uint16_t shooter_id1_17mm_speed_limit;
+      uint16_t shooter_id2_17mm_cooling_rate; 
+      uint16_t shooter_id2_17mm_cooling_limit;
+      uint16_t shooter_id2_17mm_speed_limit;
+      uint16_t shooter_id1_42mm_cooling_rate; 
+      uint16_t shooter_id1_42mm_cooling_limit;
+      uint16_t shooter_id1_42mm_speed_limit;
+      uint16_t chassis_power_limit; 
+      uint8_t mains_power_gimbal_output : 1; 
+      uint8_t mains_power_chassis_output : 1; 
+      uint8_t mains_power_shooter_output : 1; 
+  - name: power_heat_data
+    description:  "实时功率热量数据"
+    interface: 
+      - power_Heat_data: 0x0202
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint16_t chassis_volt; 
+      uint16_t chassis_current; 
+      float chassis_power; 
+      uint16_t chassis_power_buffer; 
+      uint16_t shooter_id1_17mm_cooling_heat;
+      uint16_t shooter_id2_17mm_cooling_heat;
+      uint16_t shooter_id1_42mm_cooling_heat;
+  - name: game_robot_pos
+    description: "机器人位置"
+    interface: 
+      - game_Robot_pos: 0x0203
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      float x; 
+      float y; 
+      float z; 
+      float yaw;  
+  - name: buff
+    description: "机器人增益"
+    interface: 
+      - buff: 0x0204
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint8_t power_rune_buff;     
+   - name: aerial_robot_energy
+    description: "空中机器人能量状态"
+    interface: 
+      - aerial_Robot_energy: 0x0205
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint8_t attack_time; 
+  - name: robot_hurt
+    description: "伤害状态"
+    interface: 
+      - robot_Hurt: 0x0206
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint8_t armor_id : 4; 
+      uint8_t hurt_type : 4; 
+  - name: shoot_data
+    description: "实时射击信息"
+    interface: 
+      - shoot_Data: 0x0207
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint8_t bullet_type;
+      uint8_t shooter_id; 
+      uint8_t bullet_freq; 
+      float bullet_speed; 
+  - name: bullet_remaining
+    description: "子弹剩余发射数"
+    interface: 
+      - bullet_Remaining: 0x0208
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint16_t bullet_remaining_num_17mm;
+      uint16_t bullet_remaining_num_42mm;
+      uint16_t coin_remaining_num;   
+  - name: rfid_status
+    description: 机器人RFID状态"
+    interface: 
+      - rfid_Status: 0x0209
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint32_t rfid_status;    
+  - name: dart_client_cmd
+    description: "飞镖机器人客户端指令数据"
+    interface: 
+      - dart_Client_cmds: 0x020A
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint8_t dart_launch_opening_status;
+      uint8_t dart_attack_target; 
+      uint16_t target_change_time;
+      uint8_t first_dart_speed;
+      uint8_t second_dart_speed;
+      uint8_t third_dart_speed;
+      uint8_t fourth_dart_speed;
+      uint16_t last_dart_launch_time;
+      uint16_t operate_launch_cmd_time;
+  - name: client_custom _graphic_delete
+    description: "客户端删除图形"
+    interface: 
+      - client_custom _Graphic_delete: 0xF100
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint16_t              data_cmd_id;
+      uint16_t              send_id;
+      uint16_t              receiver_id;
+      uint8_t operate_tpye;
+      uint8_t layer;                                                                         
   - name: client_custom_graphic_single
     description: "客户端绘制一个图形"
     interface: 
-      - clientGraphicDouble: 0xF101
+      - client_custom_graphic_Single: 0xF101
     stm32_receive: false
     stm32_send: true
     struct: |-
       uint16_t              data_cmd_id;
       uint16_t              send_id;
       uint16_t              receiver_id;
-      graphic_data_struct grapic_data_struct;
-  - name: client_custom_graphic_double_t
+      GraphicData_Type    grapic_data_struct;
+  - name: client_custom_graphic_double
     description: "客户端绘制两个图形"
     interface:
-      - clientGraphicDouble: 0xF102
+      - client_custom_graphic_Double: 0xF102
     stm32_receive: false
     stm32_send: true
     struct: |-
       uint16_t              data_cmd_id;
       uint16_t              send_id;
       uint16_t              receiver_id;
-      graphic_data_struct grapic_data_struct[2];
+      GraphicData_Type    grapic_data_struct[2];
+  - name: client_custom_graphic_five
+    description: "客户端绘制五个图形"
+    interface:
+      - client_custom_graphic_Five: 0xF103
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint16_t              data_cmd_id;
+      uint16_t              send_id;
+      uint16_t              receiver_id;
+      GraphicData_Type     grapic_data_struct[5]; 
+  - name: client_custom_character
+    description: "客户端绘制字符"
+    interface:
+      - client_custom_Character: 0xF110
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint16_t              data_cmd_id;
+      uint16_t              send_id;
+      uint16_t              receiver_id;
+      GraphicData_Type     grapic_data_struct; 
+      uint8_t data[30];      
+   - name: client_custom_graphic_seven
+    description: "客户端绘制七个图形"
+    interface:
+      - client_custom_graphic_Seven: 0xF104
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint16_t              data_cmd_id;
+      uint16_t              send_id;
+      uint16_t              receiver_id;
+      GraphicData_Type     grapic_data_struct[7];         
 structs:
-  - name: graphic_data_struct
+  - name: GraphicData_Type
     struct: |-
       uint8_t  graphic_name[3];
       uint32_t operate_tpye : 3;

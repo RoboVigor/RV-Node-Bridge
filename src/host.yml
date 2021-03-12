@@ -1,0 +1,75 @@
+version: 0.1
+protocols:
+  - name: debug_info
+    description: "调试信息"
+    interface: 
+      - debugInfo: 0x1024
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      DebugData_Type debugData;
+  - name: error_info
+    description: "报错信息"
+    interface: 
+      - errorInfo: 0x6666
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint16_t code;
+      char text[22];
+  - name: heartbeat
+    description: "心跳包"
+    interface: 
+      - heartbeat: 0x120
+    stm32_receive: true
+    stm32_send: true
+    struct: ""
+  - name: autoaim_data
+    description: "云台控制"
+    interface: 
+      - autoaimData: 0x0401
+    stm32_receive: true
+    stm32_send: false
+    struct: |-
+      float yaw_angle_diff;
+      float pitch_angle_diff;
+      uint8_t fire;
+  - name: chassis_data
+    description: "底盘控制"
+    interface: 
+      - autoaimData: 0x0402
+    stm32_receive: true
+    stm32_send: false
+    struct: |-
+      float vx;
+      float vy;
+      float vw;
+  - name: gyroscope_data
+    description: "陀螺仪数据"
+    interface: 
+      - autoaimData: 0x0403
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      float yaw;
+      float pitch;
+      float roll;
+  - name: dbus_data
+    description: "遥控器及键鼠数据"
+    interface: 
+      - autoaimData: 0x0404
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      uint8_t dbusBuffer[18];
+structs:
+  - name: DebugData_Type
+    struct: |-
+      int32_t debug1;
+      int32_t debug2;
+      int32_t debug3;
+      int32_t debug4;
+      int32_t debug5;
+      int32_t debug6;
+      int32_t debug7;
+      int32_t debug8;

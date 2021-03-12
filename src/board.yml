@@ -1,0 +1,29 @@
+version: 0.1
+protocols:
+  - name: robot_interactive_data
+    description: "学生机器人间通信"
+    interface: 
+      - robotCommunication: 0xF301
+    stm32_receive: true
+    stm32_send: true
+    struct: |-
+      uint16_t data_cmd_id;
+      uint16_t send_id;
+      uint16_t receiver_id;
+      int32_t  data1;
+      int32_t  data2;
+      int32_t  data3;
+      int32_t  data4;
+  - name: board_interactive_data
+    description: "主控板间通信"
+    interface: 
+      - boardAlpha: 0x0501
+      - boardBeta:  0x0502
+    stm32_receive: true
+    stm32_send: true
+    struct: |-
+      int32_t data1;
+      int32_t data2;
+      int32_t data3;
+      int32_t data4;
+structs: []
