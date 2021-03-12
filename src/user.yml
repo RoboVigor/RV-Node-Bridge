@@ -14,6 +14,7 @@ protocols:
       int32_t  data2;
       int32_t  data3;
       int32_t  data4;
+
   - name: board_interactive_data
     description: "主控板间通信"
     interface: 
