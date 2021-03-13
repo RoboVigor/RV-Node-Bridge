@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import yaml
 import re
 import math
@@ -48,10 +49,11 @@ class NodeBridgeCompiler():
         return data
     
     def parse_struct(self, struct_string, register_struct_name=''):
-        r = re.compile('\n*?(?P<type>\S*?)\s*?(?P<key>\S*?)\[?(?P<arraysize>\d*?)\]?\s*?:?\s*?(?P<bitsize>\d*?);')
+        r = re.compile('\n*?(?P<type>\S*?)\s*?(?P<key>\S*?)(?:\[(?P<arraysize>\d*?)\])?(?:\s?:\s?(?P<bitsize>\d*?))?;')
         items = [m.groupdict() for m in r.finditer(struct_string)]
         bitsize = 0
         for item in items:
+            item['arraysize'] = int(item['arraysize']) if item['arraysize'] else None
             item['typeinfo'] = self.type_info_table[item['type']]
             bitsize += int(item['bitsize'] or '0') or (item['typeinfo']['size'] * int(item['arraysize'] or '1') * 8)
         return {"size": math.ceil(bitsize/8), "items": items}
@@ -74,18 +76,45 @@ class NodeBridgeCompiler():
             compile_functions['generate'](data)
 
     def parse_python(self, data):
-        # @todo
         # parse structs
         for struct in data['structs']:
             struct.update(self.parse_struct(struct['struct']))
-            self.add_type(struct['name'], struct['size'], python="bits:"+str(struct['size']*8))
+            self.add_type(struct['name'], struct['size'], python="bits")
         # parse protocols
         for protocol in data['protocols']:
             protocol.update(self.parse_struct(protocol['struct']))
+        # generate bitstring format
+        for struct in data['structs']+data['protocols']:
+            for item in struct['items']:
+                item['format'] = "{}:{}".format(item['typeinfo']['python'], (item['bitsize'] or item['typeinfo']['size']*8))
+        return data
 
     def generate_python(self, data):
-        # @todo
+        def generate_item_struct(item):
+            if len([x for x in data['structs'] if x['name']==item['type']])>0:
+                dict_items = [('struct',item['type']),('arraysize',item['arraysize'])]
+            else:
+                dict_items = [('format',item['format']),('arraysize',item['arraysize'])]
+            return dict([x for x in dict_items if x[1]])
+
         protocol_info_table = {}
+        for struct in data['structs']:
+            protocol_info_table[struct['name']] = {
+                'size': struct['size'],
+                'struct': dict(zip([x['key'] for x in struct['items']],[generate_item_struct(x) for x in struct['items']])),
+            }
+        for protocol in data['protocols']:
+            b=[x.items() for x in protocol['interface']]
+            for (interface_key,interface_id) in [y for x in protocol['interface'] for y in x.items()]:
+                protocol_info_table[interface_key] = {
+                    'id': interface_id,
+                    'size': protocol['size'],
+                    'description': protocol['description'],
+                    'struct': dict(zip([x['key'] for x in protocol['items']],[generate_item_struct(x) for x in protocol['items']])),
+                }
+        with open('dist/protocol.yaml', 'w', encoding='utf-8') as file:
+            yaml.dump(protocol_info_table, file, default_flow_style=False, encoding='utf-8', allow_unicode=True)
+
 
     def parse_ros(self, data):
         # @todo
@@ -105,6 +134,7 @@ class NodeBridgeCompiler():
         for protocol in data['protocols']:
             protocol['name'] = protocol['name'] + '_t'
             protocol.update(self.parse_struct(protocol['struct']))
+        return data
 
     def generate_stm32(self, data):
         template_data = {}
@@ -135,3 +165,4 @@ class NodeBridgeCompiler():
 if __name__ == '__main__':
     compiler = NodeBridgeCompiler(['config/judge.yml','config/host.yml','config/user.yml'])
     compiler.compile('python')
+    compiler.compile('stm32')
