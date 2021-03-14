@@ -27,13 +27,19 @@ class NodeBridge():
         if not port:
             port = self.default_port
         with serial.Serial(port, 115200, timeout=0.1) as ser:
-            while True:
-                callback(ser.read(1))
+            while callback(ser.read(1)):
+                pass
 
 if __name__ == '__main__':
         import protocol
         bridge = NodeBridge('serial', port=1)
         protocol_data = protocol.NodeBridgeProtocol()
+        def on_receive_test(new_byte):
+            result = protocol_data.update(new_byte, verbose=True)
+            if 'result' in result:
+                return False
+            return True
+
         # send
         # while True:
         #     for i in range(10):
@@ -45,7 +51,18 @@ if __name__ == '__main__':
         #         bridge.send(test_packet)
 
         # receive
-        def on_receive_test(new_byte):
-            protocol_data.update(new_byte, verbose=True)
-        bridge.on_receive(on_receive_test)
+        # while True:
+        #     bridge.on_receive(on_receive_test)
+
+        # send while receive
+        # @todo: 减少开关端口次数
+        i=0
+        while True:
+            i = (i+1)%256
+            test_data = protocol.create_protocol_data('heartbeat')
+            # test_data['data1'] = i
+            test_packet = protocol.pack('heartbeat', test_data)
+            bridge.send(test_packet)
+            bridge.on_receive(on_receive_test)
+
 

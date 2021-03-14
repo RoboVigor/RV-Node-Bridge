@@ -24,17 +24,18 @@ class NodeBridgeCompiler():
             return None
 
     type_info_table = {
-        "uint8_t":  {"size":1, "python":"uintle", "ros":""},
-        "uint16_t": {"size":2, "python":"uintle", "ros":""},
-        "uint32_t": {"size":4, "python":"uintle", "ros":""},
-        "uint64_t": {"size":8, "python":"uintle", "ros":""},
-        "int":      {"size":2, "python":"intle", "ros":""},
-        "int8_t":   {"size":1, "python":"intle", "ros":""},
-        "int16_t":  {"size":2, "python":"intle", "ros":""},
-        "int32_t":  {"size":4, "python":"intle", "ros":""},
-        "int64_t":  {"size":8, "python":"intle", "ros":""},
-        "float":    {"size":4, "python":"floatle", "ros":""},
-        "char":     {"size":1, "python":"uintle", "ros":""},
+        "uint8_t":  {"size":1, "python":"uintle", "ros":"uint8"},
+        "uint16_t": {"size":2, "python":"uintle", "ros":"uint16"},
+        "uint32_t": {"size":4, "python":"uintle", "ros":"uint32"},
+        "uint64_t": {"size":8, "python":"uintle", "ros":"uint64"},
+        "int":      {"size":2, "python":"intle", "ros":"int16"},
+        "int8_t":   {"size":1, "python":"intle", "ros":"int8"},
+        "int16_t":  {"size":2, "python":"intle", "ros":"int16"},
+        "int32_t":  {"size":4, "python":"intle", "ros":"int32"},
+        "int64_t":  {"size":8, "python":"intle", "ros":"int64"},
+        "float":    {"size":4, "python":"floatle", "ros":"float32"},
+        "double":   {"size":8, "python":"floatle", "ros":"float64"},
+        "char":     {"size":1, "python":"uintle", "ros":"uint8"},
     }
     
     def add_type(self, type_name, size, **args):
@@ -104,7 +105,6 @@ class NodeBridgeCompiler():
                 'struct': dict(zip([x['key'] for x in struct['items']],[generate_item_struct(x) for x in struct['items']])),
             }
         for protocol in data['protocols']:
-            b=[x.items() for x in protocol['interface']]
             for (interface_key,interface_id) in [y for x in protocol['interface'] for y in x.items()]:
                 protocol_info_table[interface_key] = {
                     'id': interface_id,
@@ -117,12 +117,31 @@ class NodeBridgeCompiler():
 
 
     def parse_ros(self, data):
-        # @todo
-        pass
+        # parse structs
+        for struct in data['structs']:
+            struct.update(self.parse_struct(struct['struct']))
+            self.add_type(struct['name'], struct['size'], ros=struct['name'])
+        # parse protocols
+        for protocol in data['protocols']:
+            protocol.update(self.parse_struct(protocol['struct']))
 
     def generate_ros(self, data):
-        # @todo
-        pass
+        def generate_msg(name, items, description='', id=''):
+            msg_content = '# protocol_name: {}'.format(name)
+            msg_content += '\n# protocol_id: {:#06X}'.format(id) if id else ''
+            msg_content += '\n# protocol_description: {}'.format(description) if description else ''
+            msg_content += '\n'
+            for item in items:
+                arraysize = '[{}]'.format(item['arraysize']) if item['arraysize'] else ''
+                msg_content += '\n{}{} {}'.format(item['typeinfo']['ros'], arraysize, item['key'])
+            with open('dist/msg/{}.msg'.format(name), 'w', encoding='utf-8') as file:
+                file.write(msg_content)
+
+        for struct in data['structs']:
+            generate_msg(struct['name'], struct['items'])
+        for protocol in data['protocols']:
+            for (interface_key,interface_id) in [y for x in protocol['interface'] for y in x.items()]:
+                generate_msg(interface_key, protocol['items'], id=interface_id, description=protocol['description'])
 
     def parse_stm32(self, data):
         # parse structs
@@ -166,3 +185,4 @@ if __name__ == '__main__':
     compiler = NodeBridgeCompiler(['config/judge.yml','config/host.yml','config/user.yml'])
     compiler.compile('python')
     compiler.compile('stm32')
+    compiler.compile('ros')
