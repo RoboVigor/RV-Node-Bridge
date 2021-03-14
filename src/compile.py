@@ -93,16 +93,16 @@ class NodeBridgeCompiler():
     def generate_python(self, data):
         def generate_item_struct(item):
             if len([x for x in data['structs'] if x['name']==item['type']])>0:
-                dict_items = [('struct',item['type']),('arraysize',item['arraysize'])]
+                dict_items = [('key',item['key']), ('struct',item['type']), ('arraysize',item['arraysize'])]
             else:
-                dict_items = [('format',item['format']),('arraysize',item['arraysize'])]
+                dict_items = [('key',item['key']), ('format',item['format']), ('arraysize', item['arraysize'])]
             return dict([x for x in dict_items if x[1]])
 
         protocol_info_table = {}
         for struct in data['structs']:
             protocol_info_table[struct['name']] = {
                 'size': struct['size'],
-                'struct': dict(zip([x['key'] for x in struct['items']],[generate_item_struct(x) for x in struct['items']])),
+                'struct': [generate_item_struct(x) for x in struct['items']],
             }
         for protocol in data['protocols']:
             for (interface_key,interface_id) in [y for x in protocol['interface'] for y in x.items()]:
@@ -110,7 +110,7 @@ class NodeBridgeCompiler():
                     'id': interface_id,
                     'size': protocol['size'],
                     'description': protocol['description'],
-                    'struct': dict(zip([x['key'] for x in protocol['items']],[generate_item_struct(x) for x in protocol['items']])),
+                    'struct': [generate_item_struct(x) for x in protocol['items']],
                 }
         with open('dist/protocol.yaml', 'w', encoding='utf-8') as file:
             yaml.dump(protocol_info_table, file, default_flow_style=False, encoding='utf-8', allow_unicode=True)

@@ -13,20 +13,20 @@ with open('dist/protocol.yaml', 'r', encoding="utf-8") as file:
 def packet_to_dict(name, packet):
     data = {}
     format_string = ''
-    for (key, info) in protocol_info_table[name]['struct'].items():
+    for item in protocol_info_table[name]['struct']:
         new_data = []
-        for i in range(info.get('arraysize',1)):
-            if 'struct' in info:
-                size = protocol_info_table[info['struct']]['size']
-                new_data += [unpack_data(info['struct'], packet)]
+        for i in range(item.get('arraysize',1)):
+            if 'struct' in item:
+                size = protocol_info_table[item['struct']]['size']
+                new_data += [unpack_data(item['struct'], packet)]
             else:
-                size = math.ceil(int(re.match('.*:(?P<bitsize>\d*)', info['format']).group('bitsize'))/8)
-                new_data += bitstring.BitArray(bytes=packet).unpack(info['format'])
+                size = math.ceil(int(re.match('.*:(?P<bitsize>\d*)', item['format']).group('bitsize'))/8)
+                new_data += bitstring.BitArray(bytes=packet).unpack(item['format'])
             packet = packet[size:]
-        if 'arraysize' in info:
-            data[key] = new_data
+        if 'arraysize' in item:
+            data[item['key']] = new_data
         else:
-            data[key] = new_data[0]
+            data[item['key']] = new_data[0]
     return data
 
 def create_protocol_data(name):
@@ -36,18 +36,18 @@ def dict_to_packet(name, data):
     def generate_format_sequence(name, data):
         formats = []
         data_items = []
-        for (key, info) in protocol_info_table[name]['struct'].items():
-            if 'arraysize' in info:
-                data_list = data[key]
+        for item in protocol_info_table[name]['struct']:
+            if 'arraysize' in item:
+                data_list = data[item['key']]
             else:
-                data_list = [data[key]]
+                data_list = [data[item['key']]]
             for new_data in data_list:
-                if 'struct' in info:
-                    info['format'], new_data = generate_format_sequence(info['struct'], new_data)
+                if 'struct' in item:
+                    item['format'], new_data = generate_format_sequence(item['struct'], new_data)
                     data_items += new_data
                 else:
                     data_items += [new_data]
-                formats += [info['format']]
+                formats += [item['format']]
         return (",".join(formats), data_items)
     format_string, data_items = generate_format_sequence(name, data)
     return bitstring.pack(format_string, *data_items)
