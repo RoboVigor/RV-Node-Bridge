@@ -3,10 +3,11 @@ import yaml
 import bitstring
 import math
 import re
-import helpers
+from node_bridge import helpers
+import os
 
 # load protocol info
-with open('dist/protocol.yaml', 'r', encoding="utf-8") as file:
+with open(os.path.split(os.path.realpath(__file__))[0]+'/../dist/protocol.yaml', 'r', encoding="utf-8") as file:
     file_data = file.read()
     protocol_info_table = yaml.safe_load(file_data)
 
@@ -18,7 +19,7 @@ def packet_to_dict(name, packet):
         for i in range(item.get('arraysize',1)):
             if 'struct' in item:
                 size = protocol_info_table[item['struct']]['size']
-                new_data += [unpack_data(item['struct'], packet)]
+                new_data += [packet_to_dict(item['struct'], packet)]
             else:
                 size = math.ceil(int(re.match('.*:(?P<bitsize>\d*)', item['format']).group('bitsize'))/8)
                 new_data += bitstring.BitArray(bytes=packet).unpack(item['format'])

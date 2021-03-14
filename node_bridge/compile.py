@@ -115,7 +115,6 @@ class NodeBridgeCompiler():
         with open('dist/protocol.yaml', 'w', encoding='utf-8') as file:
             yaml.dump(protocol_info_table, file, default_flow_style=False, encoding='utf-8', allow_unicode=True)
 
-
     def parse_ros(self, data):
         # parse structs
         for struct in data['structs']:
@@ -136,12 +135,16 @@ class NodeBridgeCompiler():
                 msg_content += '\n{}{} {}'.format(item['typeinfo']['ros'], arraysize, item['key'])
             with open('dist/msg/{}.msg'.format(name), 'w', encoding='utf-8') as file:
                 file.write(msg_content)
-
+        msg_files = []
         for struct in data['structs']:
+            msg_files += [struct['name']]
             generate_msg(struct['name'], struct['items'])
         for protocol in data['protocols']:
             for (interface_key,interface_id) in [y for x in protocol['interface'] for y in x.items()]:
+                msg_files += [interface_key]
                 generate_msg(interface_key, protocol['items'], id=interface_id, description=protocol['description'])
+        with open('dist/CMakeLists.txt', 'w', encoding='utf-8') as file:
+            file.write('add_message_files(\n  FILES\n'+'\n'.join(['  {}.msg'.format(x) for x in msg_files])+'\n)')
 
     def parse_stm32(self, data):
         # parse structs

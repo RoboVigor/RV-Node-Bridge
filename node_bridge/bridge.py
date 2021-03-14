@@ -2,7 +2,7 @@
 
 import serial
 from serial.tools import list_ports
-import helpers
+import node_bridge.helpers
 from queue import Queue
 import time
 
@@ -27,6 +27,8 @@ class NodeBridge():
     def open(self, on_receive, send_queue=None, port=None):
         if not port:
             port = self.default_port
+        if not send_queue:
+            send_queue = Queue()
         with serial.Serial(port, 115200, timeout=0.1) as ser:
             while True:
                 while on_receive(ser.read(1)):
