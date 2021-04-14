@@ -46,18 +46,54 @@ class NodeBridge():
 
 if __name__ == '__main__':
     import protocol
-    bridge = NodeBridge('serial', port='COM9')
+    bridge = NodeBridge('serial', port='COM7')
     protocol_data = protocol.NodeBridgeProtocol()
 
     # send
-    while True:
-        for i in range(10):
-            test_data = protocol.create_protocol_data('chassisData')
-            test_data['vx'] = 1
-            test_packet = protocol.pack('chassisData', test_data, seq=i)
-            print(test_packet)
-            bridge.send(test_packet)
-            time.sleep(0.01)
+    # while True:
+    test_data = protocol.create_protocol_data('autoaimData')
+
+    def send(yaw_diff, pitch_diff):
+        test_data['yaw_angle_diff'] = yaw_diff
+        test_data['pitch_angle_diff'] = pitch_diff
+        test_packet = protocol.pack('autoaimData', test_data, seq=i)
+        print(test_packet)
+        bridge.send(test_packet)
+        time.sleep(0.1)
+    angle = 0.2
+    for i in range(10):
+        send(0, angle/2)
+    for i in range(20):
+        send(0, -angle/2)
+    for i in range(10):
+        send(0, angle/2)
+    time.sleep(2)
+    for i in range(10):
+        send(angle, 0)
+    for i in range(20):
+        send(-angle, 0)
+    for i in range(10):
+        send(angle, 0)
+
+    # send
+    # while True:
+    # test_data = protocol.create_protocol_data('chassisData')
+
+    # def sendvw(vw):
+    #     test_data['vw'] = vw
+    #     test_packet = protocol.pack('chassisData', test_data, seq=i)
+    #     print(test_packet)
+    #     bridge.send(test_packet)
+    #     time.sleep(0.1)
+    # speed = 0.3
+    # for i in range(10):
+    #     sendvw(speed)
+    # for i in range(20):
+    #     sendvw(-1*speed)
+    # for i in range(10):
+    #     sendvw(speed)
+    # for i in range(10):
+    #     sendvw(0)
 
     # receive
     # def on_receive_test(new_byte):
