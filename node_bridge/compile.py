@@ -5,7 +5,7 @@ import math
 import os
 
 class NodeBridgeCompiler():
-    
+
     def __init__(self, source_list=None):
         self.source_list = source_list
 
@@ -37,7 +37,7 @@ class NodeBridgeCompiler():
         "double":   {"size":8, "python":"floatle", "ros":"float64"},
         "char":     {"size":1, "python":"uintle", "ros":"uint8"},
     }
-    
+
     def add_type(self, type_name, size, **args):
         self.type_info_table[type_name] = {"size":size}
         self.type_info_table[type_name].update(args)
@@ -48,7 +48,7 @@ class NodeBridgeCompiler():
             for key in ['source', 'version', 'structs', 'protocols']:
                 data[key] += data_merge[key]
         return data
-    
+
     def parse_struct(self, struct_string, register_struct_name=''):
         r = re.compile('\n*?(?P<type>\S*?)\s*?(?P<key>\S*?)(?:\[(?P<arraysize>\d*?)\])?(?:\s?:\s?(?P<bitsize>\d*?))?;')
         items = [m.groupdict() for m in r.finditer(struct_string)]
@@ -112,7 +112,7 @@ class NodeBridgeCompiler():
                     'description': protocol['description'],
                     'struct': [generate_item_struct(x) for x in protocol['items']],
                 }
-        with open('dist/protocol.yaml', 'w', encoding='utf-8') as file:
+        with open(os.path.dirname(__file__)+'/../dist/protocol.yaml', 'w', encoding='utf-8') as file:
             yaml.dump(protocol_info_table, file, default_flow_style=False, encoding='utf-8', allow_unicode=True)
 
     def parse_ros(self, data):
@@ -133,7 +133,7 @@ class NodeBridgeCompiler():
             for item in items:
                 arraysize = '[{}]'.format(item['arraysize']) if item['arraysize'] else ''
                 msg_content += '\n{}{} {}'.format(item['typeinfo']['ros'], arraysize, item['key'])
-            with open('dist/msg/{}.msg'.format(name), 'w', encoding='utf-8') as file:
+            with open(os.path.dirname(__file__)+'/../dist/msg/{}.msg'.format(name), 'w', encoding='utf-8') as file:
                 file.write(msg_content)
         msg_files = []
         for struct in data['structs']:
@@ -143,7 +143,7 @@ class NodeBridgeCompiler():
             for (interface_key,interface_id) in [y for x in protocol['interface'] for y in x.items()]:
                 msg_files += [interface_key]
                 generate_msg(interface_key, protocol['items'], id=interface_id, description=protocol['description'])
-        with open('dist/CMakeLists.txt', 'w', encoding='utf-8') as file:
+        with open(os.path.dirname(__file__)+'/../dist/CMakeLists.txt', 'w', encoding='utf-8') as file:
             file.write('add_message_files(\n  FILES\n'+'\n'.join(['  {}.msg'.format(x) for x in msg_files])+'\n)')
 
     def parse_stm32(self, data):
@@ -163,9 +163,9 @@ class NodeBridgeCompiler():
         # concat data
         template_data['config_version'] = "\n".join([' * @version {} v{}'.format(*x) for x in zip(data['source'], data['version'])])
         # load template
-        template_protocol = self.load('template/protocol.h.txt', 'plaintext')
-        template_union = self.load('template/union.txt', 'plaintext')
-        template_struct = self.load('template/struct.txt', 'plaintext')
+        template_protocol = self.load(os.path.dirname(__file__)+'/../template/protocol.h.txt', 'plaintext')
+        template_union = self.load(os.path.dirname(__file__)+'/../template/union.txt', 'plaintext')
+        template_struct = self.load(os.path.dirname(__file__)+'/../template/struct.txt', 'plaintext')
         # generate content
         protocol_info = [list(y.values())+[x['size'], int(x['stm32_receive'])] for x in data['protocols'] for y in x['interface']]
         protocol_data_size = sum([x['size']*len(x['interface']) for x in data['protocols']])
@@ -180,12 +180,13 @@ class NodeBridgeCompiler():
         template_data['protocols'] = "\n\n".join([template_union.format(**x) for x in data['protocols']])
         template_data['protocol_info'] = ",".join(["{{{:#06X},{},{}}}".format(*x) for x in protocol_info])
         template_data['protocol_data'] = template_union.format(**protocol_data)
-        with open('dist/protocol.h', 'w', encoding="utf-8") as file:
+        with open(os.path.dirname(__file__)+'/../dist/protocol.h', 'w', encoding="utf-8") as file:
             file.write(template_protocol.format(**template_data))
 
 
 if __name__ == '__main__':
-    compiler = NodeBridgeCompiler(['config/judge.yml','config/host.yml','config/user.yml'])
+    ws = os.path.dirname(__file__)+'/../'
+    compiler = NodeBridgeCompiler([ws+'config/judge.yml', ws+'config/host.yml', ws+'config/user.yml'])
     compiler.compile('python')
     compiler.compile('stm32')
     compiler.compile('ros')
