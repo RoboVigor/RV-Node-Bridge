@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__))+'/../node_bridge/'
 import protocol, bridge
 import time
 
-bridge = bridge.NodeBridge('serial', port='COM7')
+bridge = bridge.NodeBridge('serial', port='/dev/ttyTHS2')
 protocol_data = protocol.NodeBridgeProtocol()
 
 
