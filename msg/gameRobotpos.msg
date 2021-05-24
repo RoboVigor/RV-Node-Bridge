@@ -1,0 +1,8 @@
+# protocol_name: gameRobotpos
+# protocol_id: 0X0203
+# protocol_description: 机器人位置
+
+float32 x
+float32 y
+float32 z
+float32 yaw

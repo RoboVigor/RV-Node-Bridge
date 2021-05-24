@@ -1,0 +1,11 @@
+# protocol_name: robotCommunication
+# protocol_id: 0XF301
+# protocol_description: 学生机器人间通信
+
+uint16 data_cmd_id
+uint16 send_id
+uint16 receiver_id
+int32 data1
+int32 data2
+int32 data3
+int32 data4

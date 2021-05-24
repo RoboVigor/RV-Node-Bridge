@@ -1,0 +1,555 @@
+DebugData_Type:
+  size: 32
+  struct:
+  - format: intle:32
+    key: debug1
+  - format: intle:32
+    key: debug2
+  - format: intle:32
+    key: debug3
+  - format: intle:32
+    key: debug4
+  - format: intle:32
+    key: debug5
+  - format: intle:32
+    key: debug6
+  - format: intle:32
+    key: debug7
+  - format: intle:32
+    key: debug8
+GraphicData_Type:
+  size: 15
+  struct:
+  - arraysize: 3
+    format: uintle:8
+    key: graphic_name
+  - format: uintle:3
+    key: operate_tpye
+  - format: uintle:3
+    key: graphic_tpye
+  - format: uintle:4
+    key: layer
+  - format: uintle:4
+    key: color
+  - format: uintle:9
+    key: start_angle
+  - format: uintle:9
+    key: end_angle
+  - format: uintle:10
+    key: width
+  - format: uintle:11
+    key: start_x
+  - format: uintle:11
+    key: start_y
+  - format: uintle:10
+    key: radius
+  - format: uintle:11
+    key: end_x
+  - format: uintle:11
+    key: end_y
+aerialRobotenergy:
+  description: 空中机器人能量状态
+  id: 517
+  size: 1
+  struct:
+  - format: uintle:8
+    key: attack_time
+autoaimData:
+  description: 云台控制
+  id: 1025
+  size: 9
+  struct:
+  - format: floatle:32
+    key: yaw_angle_diff
+  - format: floatle:32
+    key: pitch_angle_diff
+  - format: uintle:8
+    key: fire
+boardAlpha:
+  description: 主控板间通信
+  id: 1281
+  size: 16
+  struct:
+  - format: intle:32
+    key: data1
+  - format: intle:32
+    key: data2
+  - format: intle:32
+    key: data3
+  - format: intle:32
+    key: data4
+boardBeta:
+  description: 主控板间通信
+  id: 1282
+  size: 16
+  struct:
+  - format: intle:32
+    key: data1
+  - format: intle:32
+    key: data2
+  - format: intle:32
+    key: data3
+  - format: intle:32
+    key: data4
+buffInfo:
+  description: 机器人增益
+  id: 516
+  size: 1
+  struct:
+  - format: uintle:8
+    key: power_rune_buff
+bulletRemaining:
+  description: 子弹剩余发射数
+  id: 520
+  size: 6
+  struct:
+  - format: uintle:16
+    key: bullet_remaining_num_17mm
+  - format: uintle:16
+    key: bullet_remaining_num_42mm
+  - format: uintle:16
+    key: coin_remaining_num
+chassisData:
+  description: 底盘控制
+  id: 1026
+  size: 12
+  struct:
+  - format: floatle:32
+    key: vx
+  - format: floatle:32
+    key: vy
+  - format: floatle:32
+    key: vw
+clientCustomCharacter:
+  description: 客户端绘制字符
+  id: 61712
+  size: 51
+  struct:
+  - format: uintle:16
+    key: data_cmd_id
+  - format: uintle:16
+    key: send_id
+  - format: uintle:16
+    key: receiver_id
+  - key: grapic_data_struct
+    struct: GraphicData_Type
+  - arraysize: 30
+    format: uintle:8
+    key: data
+clientCustomGraphicDelete:
+  description: 客户端删除图形
+  id: 61696
+  size: 8
+  struct:
+  - format: uintle:16
+    key: data_cmd_id
+  - format: uintle:16
+    key: send_id
+  - format: uintle:16
+    key: receiver_id
+  - format: uintle:8
+    key: operate_tpye
+  - format: uintle:8
+    key: layer
+clientCustomGraphicDouble:
+  description: 客户端绘制两个图形
+  id: 61698
+  size: 36
+  struct:
+  - format: uintle:16
+    key: data_cmd_id
+  - format: uintle:16
+    key: send_id
+  - format: uintle:16
+    key: receiver_id
+  - arraysize: 2
+    key: grapic_data_struct
+    struct: GraphicData_Type
+clientCustomGraphicFive:
+  description: 客户端绘制五个图形
+  id: 61699
+  size: 81
+  struct:
+  - format: uintle:16
+    key: data_cmd_id
+  - format: uintle:16
+    key: send_id
+  - format: uintle:16
+    key: receiver_id
+  - arraysize: 5
+    key: grapic_data_struct
+    struct: GraphicData_Type
+clientCustomGraphicSeven:
+  description: 客户端绘制七个图形
+  id: 61700
+  size: 111
+  struct:
+  - format: uintle:16
+    key: data_cmd_id
+  - format: uintle:16
+    key: send_id
+  - format: uintle:16
+    key: receiver_id
+  - arraysize: 7
+    key: grapic_data_struct
+    struct: GraphicData_Type
+client_custom_graphicSingle:
+  description: 客户端绘制一个图形
+  id: 61697
+  size: 21
+  struct:
+  - format: uintle:16
+    key: data_cmd_id
+  - format: uintle:16
+    key: send_id
+  - format: uintle:16
+    key: receiver_id
+  - key: grapic_data_struct
+    struct: GraphicData_Type
+dartClientCmds:
+  description: 飞镖机器人客户端指令数据
+  id: 522
+  size: 12
+  struct:
+  - format: uintle:8
+    key: dart_launch_opening_status
+  - format: uintle:8
+    key: dart_attack_target
+  - format: uintle:16
+    key: target_change_time
+  - format: uintle:8
+    key: first_dart_speed
+  - format: uintle:8
+    key: second_dart_speed
+  - format: uintle:8
+    key: third_dart_speed
+  - format: uintle:8
+    key: fourth_dart_speed
+  - format: uintle:16
+    key: last_dart_launch_time
+  - format: uintle:16
+    key: operate_launch_cmd_time
+dartRemainingtime:
+  description: 飞镖发射口倒计
+  id: 261
+  size: 1
+  struct:
+  - format: uintle:8
+    key: dart_remaining_time
+dartStatus:
+  description: 飞镖发射状态
+  id: 4
+  size: 3
+  struct:
+  - format: uintle:8
+    key: dart_belong
+  - format: uintle:16
+    key: stage_remaining_time
+dbugData:
+  description: 遥控器及键鼠数据
+  id: 1028
+  size: 18
+  struct:
+  - arraysize: 18
+    format: uintle:8
+    key: dbusBuffer
+debugInfo:
+  description: 调试信息
+  id: 4132
+  size: 32
+  struct:
+  - key: debugData
+    struct: DebugData_Type
+errorInfo:
+  description: 报错信息
+  id: 26214
+  size: 24
+  struct:
+  - format: uintle:16
+    key: code
+  - arraysize: 22
+    format: uintle:8
+    key: text
+eventData:
+  description: 场地事件数据
+  id: 257
+  size: 4
+  struct:
+  - format: uintle:32
+    key: event_type
+gameResult:
+  description: 比赛结果的数据
+  id: 2
+  size: 1
+  struct:
+  - format: uintle:8
+    key: winner
+gameRobotpos:
+  description: 机器人位置
+  id: 515
+  size: 16
+  struct:
+  - format: floatle:32
+    key: x
+  - format: floatle:32
+    key: y
+  - format: floatle:32
+    key: z
+  - format: floatle:32
+    key: yaw
+gameRobotstatus:
+  description: 比赛机器人状态
+  id: 513
+  size: 27
+  struct:
+  - format: uintle:8
+    key: robot_id
+  - format: uintle:8
+    key: robot_level
+  - format: uintle:16
+    key: remain_HP
+  - format: uintle:16
+    key: max_HP
+  - format: uintle:16
+    key: shooter_id1_17mm_cooling_rate
+  - format: uintle:16
+    key: shooter_id1_17mm_cooling_limit
+  - format: uintle:16
+    key: shooter_id1_17mm_speed_limit
+  - format: uintle:16
+    key: shooter_id2_17mm_cooling_rate
+  - format: uintle:16
+    key: shooter_id2_17mm_cooling_limit
+  - format: uintle:16
+    key: shooter_id2_17mm_speed_limit
+  - format: uintle:16
+    key: shooter_id1_42mm_cooling_rate
+  - format: uintle:16
+    key: shooter_id1_42mm_cooling_limit
+  - format: uintle:16
+    key: shooter_id1_42mm_speed_limit
+  - format: uintle:16
+    key: chassis_power_limit
+  - format: uintle:1
+    key: mains_power_gimbal_output
+  - format: uintle:1
+    key: mains_power_chassis_output
+  - format: uintle:1
+    key: mains_power_shooter_output
+gameStatus:
+  description: 比赛状态数据
+  id: 1
+  size: 11
+  struct:
+  - format: uintle:4
+    key: game_type
+  - format: uintle:4
+    key: game_progress
+  - format: uintle:16
+    key: stage_remain_time
+  - format: uintle:64
+    key: SyncTimeStamp
+gyroscopeData:
+  description: 陀螺仪数据
+  id: 1027
+  size: 12
+  struct:
+  - format: floatle:32
+    key: yaw
+  - format: floatle:32
+    key: pitch
+  - format: floatle:32
+    key: roll
+healthPoint:
+  description: 机器人血量数据
+  id: 3
+  size: 32
+  struct:
+  - format: uintle:16
+    key: red_1_robot_HP
+  - format: uintle:16
+    key: red_2_robot_HP
+  - format: uintle:16
+    key: red_3_robot_HP
+  - format: uintle:16
+    key: red_4_robot_HP
+  - format: uintle:16
+    key: red_5_robot_HP
+  - format: uintle:16
+    key: red_7_robot_HP
+  - format: uintle:16
+    key: red_outpost_HP
+  - format: uintle:16
+    key: red_base_HP
+  - format: uintle:16
+    key: blue_1_robot_HP
+  - format: uintle:16
+    key: blue_2_robot_HP
+  - format: uintle:16
+    key: blue_3_robot_HP
+  - format: uintle:16
+    key: blue_4_robot_HP
+  - format: uintle:16
+    key: blue_5_robot_HP
+  - format: uintle:16
+    key: blue_7_robot_HP
+  - format: uintle:16
+    key: blue_outpost_HP
+  - format: uintle:16
+    key: blue_base_HP
+heartbeat:
+  description: 心跳包
+  id: 288
+  size: 0
+  struct: []
+icraBuffDebuffZoneStatus:
+  description: 人工智能挑战赛加成与惩罚区状态
+  id: 5
+  size: 11
+  struct:
+  - format: uintle:1
+    key: F1_zone_status
+  - format: uintle:3
+    key: F1_zone_buff_debuff_status
+  - format: uintle:1
+    key: F2_zone_status
+  - format: uintle:3
+    key: F2_zone_buff_debuff_status
+  - format: uintle:1
+    key: F3_zone_status
+  - format: uintle:3
+    key: F3_zone_buff_debuff_status
+  - format: uintle:1
+    key: F4_zone_status
+  - format: uintle:3
+    key: F4_zone_buff_debuff_status
+  - format: uintle:1
+    key: F5_zone_status
+  - format: uintle:3
+    key: F5_zone_buff_debuff_status
+  - format: uintle:1
+    key: F6_zone_status
+  - format: uintle:3
+    key: F6_zone_buff_debuff_status
+  - format: uintle:16
+    key: red1_bullet_left
+  - format: uintle:16
+    key: red2_bullet_left
+  - format: uintle:16
+    key: blue1_bullet_left
+  - format: uintle:16
+    key: blue2_bullet_left
+jointInfo:
+  description: 工程机械臂数据
+  id: 1029
+  size: 20
+  struct:
+  - format: intle:16
+    key: base_joint_position
+  - format: intle:16
+    key: base_joint_speed
+  - format: intle:16
+    key: shoulder_joint_position
+  - format: intle:16
+    key: shoulder_joint_speed
+  - format: intle:16
+    key: elbow_joint_position
+  - format: intle:16
+    key: elbow_joint_speed
+  - format: intle:16
+    key: wrist_joint_1_position
+  - format: intle:16
+    key: wrist_joint_1_speed
+  - format: intle:16
+    key: wrist_joint_2_position
+  - format: intle:16
+    key: wrist_joint_2_speed
+powerHeatData:
+  description: 实时功率热量数据
+  id: 514
+  size: 16
+  struct:
+  - format: uintle:16
+    key: chassis_volt
+  - format: uintle:16
+    key: chassis_current
+  - format: floatle:32
+    key: chassis_power
+  - format: uintle:16
+    key: chassis_power_buffer
+  - format: uintle:16
+    key: shooter_id1_17mm_cooling_heat
+  - format: uintle:16
+    key: shooter_id2_17mm_cooling_heat
+  - format: uintle:16
+    key: shooter_id1_42mm_cooling_heat
+refereeWarning:
+  description: 裁判警告信息
+  id: 260
+  size: 2
+  struct:
+  - format: uintle:8
+    key: level
+  - format: uintle:8
+    key: foul_robot_id
+rfidStatus:
+  description: 机器人RFID状态
+  id: 521
+  size: 4
+  struct:
+  - format: uintle:32
+    key: rfid_status
+robotCommunication:
+  description: 学生机器人间通信
+  id: 62209
+  size: 22
+  struct:
+  - format: uintle:16
+    key: data_cmd_id
+  - format: uintle:16
+    key: send_id
+  - format: uintle:16
+    key: receiver_id
+  - format: intle:32
+    key: data1
+  - format: intle:32
+    key: data2
+  - format: intle:32
+    key: data3
+  - format: intle:32
+    key: data4
+robotHurt:
+  description: 伤害状态
+  id: 518
+  size: 1
+  struct:
+  - format: uintle:4
+    key: armor_id
+  - format: uintle:4
+    key: hurt_type
+shootData:
+  description: 实时射击信息
+  id: 519
+  size: 7
+  struct:
+  - format: uintle:8
+    key: bullet_type
+  - format: uintle:8
+    key: shooter_id
+  - format: uintle:8
+    key: bullet_freq
+  - format: floatle:32
+    key: bullet_speed
+supplyProjectileaction:
+  description: 补给站动作标识
+  id: 258
+  size: 4
+  struct:
+  - format: uintle:8
+    key: supply_projectile_id
+  - format: uintle:8
+    key: supply_robot_id
+  - format: uintle:8
+    key: supply_projectile_step
+  - format: uintle:8
+    key: supply_projectile_num

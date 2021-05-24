@@ -16,6 +16,7 @@ eggs/
 lib/
 lib64/
 parts/
+slibrary/
 var/
 wheels/
 pip-wheel-metadata/

@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__))+'/../')
+
 import yaml
 import bitstring
 import math
 import re
-import helpers
 import os
+from node_bridge import helpers
 
 # load protocol info
-with open(os.path.split(os.path.realpath(__file__))[0]+'/../dist/protocol.yaml', 'r', encoding="utf-8") as file:
+with open(os.path.split(os.path.realpath(__file__))[0]+'/../../library/protocol.yaml', 'r', encoding="utf-8") as file:
     file_data = file.read()
     protocol_info_table = yaml.safe_load(file_data)
 

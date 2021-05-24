@@ -1,4 +1,4 @@
-version: 0.1
+version: 1.0
 protocols:
   - name: debug_info
     description: "调试信息"
@@ -68,6 +68,24 @@ protocols:
     stm32_send: true
     struct: |-
       uint8_t dbusBuffer[18];
+
+  - name: joint_info
+    description: "工程机械臂数据"
+    interface: 
+      - jointInfo: 0x0405
+    stm32_receive: false
+    stm32_send: true
+    struct: |-
+      int16_t base_joint_position;
+      int16_t base_joint_speed;
+      int16_t shoulder_joint_position;
+      int16_t shoulder_joint_speed;
+      int16_t elbow_joint_position;
+      int16_t elbow_joint_speed;
+      int16_t wrist_joint_1_position;
+      int16_t wrist_joint_1_speed;
+      int16_t wrist_joint_2_position;
+      int16_t wrist_joint_2_speed;
 
 structs:
   - name: DebugData_Type

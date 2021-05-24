@@ -1,0 +1,5 @@
+# protocol_name: dbugData
+# protocol_id: 0X0404
+# protocol_description: 遥控器及键鼠数据
+
+uint8[18] dbusBuffer

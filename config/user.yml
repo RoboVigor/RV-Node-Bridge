@@ -1,4 +1,4 @@
-version: 0.1
+version: 1.0
 protocols:
   - name: robot_interactive_data
     description: "学生机器人间通信"

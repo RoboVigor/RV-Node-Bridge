@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__))+'/../')
 
 import serial
 from serial.tools import list_ports
-import helpers
+from node_bridge import helpers
 from queue import Queue
 import time
 
@@ -46,7 +49,7 @@ class NodeBridge():
 
 if __name__ == '__main__':
     import protocol
-    bridge = NodeBridge('serial', port='COM7')
+    bridge = NodeBridge('serial', port='/dev/ttyUSB0')
     protocol_data = protocol.NodeBridgeProtocol()
 
     # send

@@ -1,0 +1,11 @@
+# protocol_name: powerHeatData
+# protocol_id: 0X0202
+# protocol_description: 实时功率热量数据
+
+uint16 chassis_volt
+uint16 chassis_current
+float32 chassis_power
+uint16 chassis_power_buffer
+uint16 shooter_id1_17mm_cooling_heat
+uint16 shooter_id2_17mm_cooling_heat
+uint16 shooter_id1_42mm_cooling_heat
