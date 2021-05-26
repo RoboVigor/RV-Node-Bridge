@@ -83,8 +83,8 @@ add_message_files(
   chassisData.msg
   gyroscopeData.msg
   dbugData.msg
-  jointInfo.msg
-  controlInfo.msg
+  jointState.msg
+  jointControl.msg
   robotCommunication.msg
   boardAlpha.msg
   boardBeta.msg

@@ -11,7 +11,7 @@
  *          裁判系统  0xF100 - 0xF1FF
  *          车间通讯  0xF200 - 0xF2FF
  * @version judge.yml v1.0
- * @version host.yml v1.1
+ * @version host.yml v1.2
  * @version user.yml v1.0
  */
 
@@ -611,8 +611,8 @@ typedef union
         chassis_data_t chassisData; // 0X0402 底盘控制
         gyroscope_data_t gyroscopeData; // 0X0403 陀螺仪数据
         dbus_data_t dbugData; // 0X0404 遥控器及键鼠数据
-        joint_info_t jointInfo; // 0X0405 工程机械臂数据
-        joint_info_t controlInfo; // 0X0406 工程机械臂数据
+        joint_info_t jointState; // 0X0405 工程机械臂数据
+        joint_info_t jointControl; // 0X0406 工程机械臂数据
         robot_interactive_data_t robotCommunication; // 0XF301 学生机器人间通信
         board_interactive_data_t boardAlpha; // 0X0501 主控板间通信
         board_interactive_data_t boardBeta; // 0X0502 主控板间通信
