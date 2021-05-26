@@ -2,6 +2,7 @@
 # protocol_id: 0X0405
 # protocol_description: 工程机械臂数据
 
+uint8 state_code
 int16 base_joint_position
 int16 base_joint_speed
 int16 shoulder_joint_position

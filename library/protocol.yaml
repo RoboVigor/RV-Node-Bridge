@@ -209,8 +209,10 @@ client_custom_graphicSingle:
 controlInfo:
   description: 工程机械臂数据
   id: 1030
-  size: 20
+  size: 21
   struct:
+  - format: uintle:8
+    key: state_code
   - format: intle:16
     key: base_joint_position
   - format: intle:16
@@ -467,8 +469,10 @@ icraBuffDebuffZoneStatus:
 jointInfo:
   description: 工程机械臂数据
   id: 1029
-  size: 20
+  size: 21
   struct:
+  - format: uintle:8
+    key: state_code
   - format: intle:16
     key: base_joint_position
   - format: intle:16

@@ -77,6 +77,7 @@ protocols:
     stm32_receive: true
     stm32_send: true
     struct: |-
+      uint8_t state_code;
       int16_t base_joint_position;
       int16_t base_joint_speed;
       int16_t shoulder_joint_position;
