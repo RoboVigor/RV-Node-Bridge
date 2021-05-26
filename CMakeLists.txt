@@ -49,44 +49,45 @@ catkin_python_setup()
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  aerialRobotenergy.msg
-  autoaimData.msg
-  boardAlpha.msg
-  boardBeta.msg
-  buffInfo.msg
-  bulletRemaining.msg
-  chassisData.msg
-  client_custom_graphicSingle.msg
-  clientCustomCharacter.msg
-  clientCustomGraphicDelete.msg
-  clientCustomGraphicDouble.msg
-  clientCustomGraphicFive.msg
-  clientCustomGraphicSeven.msg
-  dartClientCmds.msg
-  dartRemainingtime.msg
-  dartStatus.msg
-  dbugData.msg
-  DebugData_Type.msg
-  debugInfo.msg
-  errorInfo.msg
-  eventData.msg
-  gameResult.msg
-  gameRobotpos.msg
-  gameRobotstatus.msg
-  gameStatus.msg
   GraphicData_Type.msg
-  gyroscopeData.msg
+  DebugData_Type.msg
+  gameStatus.msg
+  gameResult.msg
   healthPoint.msg
-  heartbeat.msg
+  dartStatus.msg
   icraBuffDebuffZoneStatus.msg
-  jointInfo.msg
-  powerHeatData.msg
+  eventData.msg
+  supplyProjectileaction.msg
   refereeWarning.msg
-  rfidStatus.msg
-  robotCommunication.msg
+  dartRemainingtime.msg
+  gameRobotstatus.msg
+  powerHeatData.msg
+  gameRobotpos.msg
+  buffInfo.msg
+  aerialRobotenergy.msg
   robotHurt.msg
   shootData.msg
-  supplyProjectileaction.msg
+  bulletRemaining.msg
+  rfidStatus.msg
+  dartClientCmds.msg
+  clientCustomGraphicDelete.msg
+  client_custom_graphicSingle.msg
+  clientCustomGraphicDouble.msg
+  clientCustomGraphicFive.msg
+  clientCustomCharacter.msg
+  clientCustomGraphicSeven.msg
+  debugInfo.msg
+  errorInfo.msg
+  heartbeat.msg
+  autoaimData.msg
+  chassisData.msg
+  gyroscopeData.msg
+  dbugData.msg
+  jointInfo.msg
+  controlInfo.msg
+  robotCommunication.msg
+  boardAlpha.msg
+  boardBeta.msg
 )
 
 ## Generate services in the 'srv' folder
