@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import rospy
-from std_msgs.msg import String
 from node_bridge_ros import msg
 from node_bridge.bridge import NodeBridge
 from node_bridge.protocol import NodeBridgeProtocol

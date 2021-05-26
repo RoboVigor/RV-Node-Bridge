@@ -206,6 +206,31 @@ client_custom_graphicSingle:
     key: receiver_id
   - key: grapic_data_struct
     struct: GraphicData_Type
+controlInfo:
+  description: 工程机械臂数据
+  id: 1030
+  size: 20
+  struct:
+  - format: intle:16
+    key: base_joint_position
+  - format: intle:16
+    key: base_joint_speed
+  - format: intle:16
+    key: shoulder_joint_position
+  - format: intle:16
+    key: shoulder_joint_speed
+  - format: intle:16
+    key: elbow_joint_position
+  - format: intle:16
+    key: elbow_joint_speed
+  - format: intle:16
+    key: wrist_joint_1_position
+  - format: intle:16
+    key: wrist_joint_1_speed
+  - format: intle:16
+    key: wrist_joint_2_position
+  - format: intle:16
+    key: wrist_joint_2_speed
 dartClientCmds:
   description: 飞镖机器人客户端指令数据
   id: 522

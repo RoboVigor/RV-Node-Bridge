@@ -35,6 +35,7 @@ add_message_files(
   gyroscopeData.msg
   dbugData.msg
   jointInfo.msg
+  controlInfo.msg
   robotCommunication.msg
   boardAlpha.msg
   boardBeta.msg

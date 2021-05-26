@@ -1,5 +1,5 @@
-# protocol_name: jointInfo
-# protocol_id: 0X0405
+# protocol_name: controlInfo
+# protocol_id: 0X0406
 # protocol_description: 工程机械臂数据
 
 int16 base_joint_position

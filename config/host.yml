@@ -1,4 +1,4 @@
-version: 1.0
+version: 1.1
 protocols:
   - name: debug_info
     description: "调试信息"
@@ -73,7 +73,8 @@ protocols:
     description: "工程机械臂数据"
     interface: 
       - jointInfo: 0x0405
-    stm32_receive: false
+      - controlInfo: 0x0406
+    stm32_receive: true
     stm32_send: true
     struct: |-
       int16_t base_joint_position;
