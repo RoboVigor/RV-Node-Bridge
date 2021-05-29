@@ -48,9 +48,9 @@ class NodeBridgeROS():
         data = protocol.create_protocol_data(protocol_name)
         for struct_key in [x['key'] for x in protocol_info['struct']]:
             data[struct_key] = getattr(req, struct_key)
+        self._seq = (self._seq+1)%256
         packet = protocol.pack(protocol_name, data, seq=self._seq)
         self._send_queue.put(packet)
-        self._seq = (self._seq+1)%256
         return 'protocol %s sent.' % protocol_name
 
 if __name__ == '__main__':

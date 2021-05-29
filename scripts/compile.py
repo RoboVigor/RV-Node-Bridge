@@ -184,7 +184,7 @@ class NodeBridgeCompiler():
         # fill template
         template_data['structs'] = "\n\n".join([template_struct.format(**x) for x in data['structs']])
         template_data['protocols'] = "\n\n".join([template_union.format(**x) for x in data['protocols']])
-        template_data['protocol_info'] = ",".join(["{{{:#06X},{},{}}}".format(*x) for x in protocol_info])
+        template_data['protocol_info'] = ",".join(["{{{:#06X},{},{},0,-1,-1}}".format(*x) for x in protocol_info])
         template_data['protocol_data'] = template_union.format(**protocol_data)
         with open(os.path.dirname(__file__)+'/../library/protocol.h', 'w', encoding="utf-8") as file:
             file.write(template_protocol.format(**template_data))
