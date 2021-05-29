@@ -125,7 +125,7 @@ class NodeBridgeCompiler():
             protocol.update(self.parse_struct(protocol['struct']))
 
     def generate_ros(self, data):
-        def generate_msg_and_srv(name, items, description='', id=''):
+        def generate_msg_and_srv(name, items, description='', id='', srv=True):
             msg_content = '# protocol_name: {}'.format(name)
             msg_content += '\n# protocol_id: {:#06X}'.format(id) if id else ''
             msg_content += '\n# protocol_description: {}'.format(description) if description else ''
@@ -135,19 +135,22 @@ class NodeBridgeCompiler():
                 msg_content += '\n{}{} {}'.format(item['typeinfo']['ros'], arraysize, item['key'])
             with open(os.path.dirname(__file__)+'/../msg/{}.msg'.format(name), 'w', encoding='utf-8') as file:
                 file.write(msg_content)
-            with open(os.path.dirname(__file__)+'/../srv/{}.srv'.format(name), 'w', encoding='utf-8') as file:
-                file.write(msg_content+'\n---\nstring result')
+            if srv:
+                with open(os.path.dirname(__file__)+'/../srv/send_{}.srv'.format(name), 'w', encoding='utf-8') as file:
+                    file.write(msg_content+'\n---\nstring result')
         msg_files = []
+        srv_files = []
         for struct in data['structs']:
             msg_files += [struct['name']]
-            generate_msg_and_srv(struct['name'], struct['items'])
+            generate_msg_and_srv(struct['name'], struct['items'], srv=False)
         for protocol in data['protocols']:
             for (interface_key,interface_id) in [y for x in protocol['interface'] for y in x.items()]:
                 msg_files += [interface_key]
+                srv_files += [interface_key]
                 generate_msg_and_srv(interface_key, protocol['items'], id=interface_id, description=protocol['description'])
         with open(os.path.dirname(__file__)+'/../library/CMakeLists.tmp.txt', 'w', encoding='utf-8') as file:
             file.write('add_message_files(\n  FILES '+' '.join(['{}.msg'.format(x) for x in msg_files])+'\n)\n')
-            file.write('add_service_files(\n  FILES '+' '.join(['{}.srv'.format(x) for x in msg_files])+'\n)')
+            file.write('add_service_files(\n  FILES '+' '.join(['send_{}.srv'.format(x) for x in srv_files])+'\n)')
 
     def parse_stm32(self, data):
         # parse structs
