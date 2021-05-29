@@ -10,7 +10,8 @@ def talker():
     rospy.init_node('node_bridge', anonymous=True)
     rate = rospy.Rate(125) 
     #bridge
-    bridge = NodeBridge('serial', port=0)
+    print('node bridge listen on /dev/usbTTY')
+    bridge = NodeBridge('serial', port='/dev/usbTTY')
     protocol_data = NodeBridgeProtocol()
     def on_receive(new_byte):
         result = protocol_data.update(new_byte)
