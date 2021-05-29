@@ -110,7 +110,7 @@ class NodeBridgeCompiler():
                     'id': interface_id,
                     'size': protocol['size'],
                     'description': protocol['description'],
-                    'struct': [generate_item_struct(x) for x in protocol['items']],
+                    'struct': [generate_item_struct(x) for x in protocol['items']]
                 }
         with open(os.path.dirname(__file__)+'/../library/protocol.yaml', 'w', encoding='utf-8') as file:
             yaml.dump(protocol_info_table, file, default_flow_style=False, encoding='utf-8', allow_unicode=True)
@@ -125,7 +125,7 @@ class NodeBridgeCompiler():
             protocol.update(self.parse_struct(protocol['struct']))
 
     def generate_ros(self, data):
-        def generate_msg(name, items, description='', id=''):
+        def generate_msg_and_srv(name, items, description='', id=''):
             msg_content = '# protocol_name: {}'.format(name)
             msg_content += '\n# protocol_id: {:#06X}'.format(id) if id else ''
             msg_content += '\n# protocol_description: {}'.format(description) if description else ''
@@ -135,16 +135,19 @@ class NodeBridgeCompiler():
                 msg_content += '\n{}{} {}'.format(item['typeinfo']['ros'], arraysize, item['key'])
             with open(os.path.dirname(__file__)+'/../msg/{}.msg'.format(name), 'w', encoding='utf-8') as file:
                 file.write(msg_content)
+            with open(os.path.dirname(__file__)+'/../srv/{}.srv'.format(name), 'w', encoding='utf-8') as file:
+                file.write(msg_content+'\n---\nstring result')
         msg_files = []
         for struct in data['structs']:
             msg_files += [struct['name']]
-            generate_msg(struct['name'], struct['items'])
+            generate_msg_and_srv(struct['name'], struct['items'])
         for protocol in data['protocols']:
             for (interface_key,interface_id) in [y for x in protocol['interface'] for y in x.items()]:
                 msg_files += [interface_key]
-                generate_msg(interface_key, protocol['items'], id=interface_id, description=protocol['description'])
+                generate_msg_and_srv(interface_key, protocol['items'], id=interface_id, description=protocol['description'])
         with open(os.path.dirname(__file__)+'/../library/CMakeLists.tmp.txt', 'w', encoding='utf-8') as file:
-            file.write('add_message_files(\n  FILES\n'+'\n'.join(['  {}.msg'.format(x) for x in msg_files])+'\n)')
+            file.write('add_message_files(\n  FILES '+' '.join(['{}.msg'.format(x) for x in msg_files])+'\n)\n')
+            file.write('add_service_files(\n  FILES '+' '.join(['{}.srv'.format(x) for x in msg_files])+'\n)')
 
     def parse_stm32(self, data):
         # parse structs

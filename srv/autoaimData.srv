@@ -1,0 +1,9 @@
+# protocol_name: autoaimData
+# protocol_id: 0X0401
+# protocol_description: 云台控制
+
+float32 yaw_angle_diff
+float32 pitch_angle_diff
+uint8 fire
+---
+string result

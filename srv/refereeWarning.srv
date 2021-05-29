@@ -1,0 +1,8 @@
+# protocol_name: refereeWarning
+# protocol_id: 0X0104
+# protocol_description: 裁判警告信息
+
+uint8 level
+uint8 foul_robot_id
+---
+string result

@@ -1,0 +1,9 @@
+# protocol_name: gyroscopeData
+# protocol_id: 0X0403
+# protocol_description: 陀螺仪数据
+
+float32 yaw
+float32 pitch
+float32 roll
+---
+string result
