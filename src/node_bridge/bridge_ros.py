@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 import rospy
-from node_bridge_ros import msg
+from node_bridge_ros import msg, srv
 from node_bridge.bridge import NodeBridge
 from node_bridge import protocol
 from node_bridge.protocol import NodeBridgeProtocol
-import std_msgs
 from munch import munchify
 from queue import Queue
 
@@ -15,13 +14,14 @@ class NodeBridgeROS():
         rate = rospy.Rate(125) 
         #bridge
         print('node bridge listen on /dev/usbTTY')
-        bridge = NodeBridge('serial', port='/dev/usbTTY')
+        self._bridge = NodeBridge('serial', port='/dev/usbTTY')
         self._protocol_data = NodeBridgeProtocol()
         self._send_queue = Queue()
         #service
+        self._seq = 0
         self._init_service()
         while not rospy.is_shutdown():
-            bridge.open(self._on_receive, send_queue=self._send_queue)
+            self._bridge.open(self._on_receive, send_queue=self._send_queue)
 
     def _on_receive(self, new_byte):
         result = self._protocol_data.update(new_byte)
@@ -38,14 +38,20 @@ class NodeBridgeROS():
             pub.publish(**data)
 
     def _init_service(self):
-        serice_list = [x for x,y in protocol.protocol_info_table.items() if y['service']]
+        serice_list = ['send_'+x for x,y in protocol.protocol_info_table.items() if 'id' in y]
         for service_name in serice_list:
-            s = rospy.Service(service_name, getattr(msg, service_name), self._handle_service)
+            s = rospy.Service(service_name, getattr(srv, service_name), self._handle_service)
 
     def _handle_service(self, req):
-        # for (key,value) in rqt:
-        rospy.loginfo(dir(req))
-        return std_msgs.msg.String('Sent.')
+        protocol_name = type(req).__name__[5:-7]
+        protocol_info = protocol.protocol_info_table[protocol_name]
+        data = protocol.create_protocol_data(protocol_name)
+        for struct_key in [x['key'] for x in protocol_info['struct']]:
+            data[struct_key] = getattr(req, struct_key)
+        packet = protocol.pack(protocol_name, data, seq=self._seq)
+        self._send_queue.put(packet)
+        self._seq = (self._seq+1)%256
+        return 'protocol %s sent.' % protocol_name
 
 if __name__ == '__main__':
     try:

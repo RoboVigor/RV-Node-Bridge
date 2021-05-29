@@ -439,6 +439,33 @@ icraBuffDebuffZoneStatus:
     key: blue1_bullet_left
   - format: uintle:16
     key: blue2_bullet_left
+jointCalibration:
+  description: 工程机械臂数据
+  id: 1031
+  size: 21
+  struct:
+  - format: uintle:8
+    key: state_code
+  - format: intle:16
+    key: base_joint_position
+  - format: intle:16
+    key: base_joint_speed
+  - format: intle:16
+    key: shoulder_joint_position
+  - format: intle:16
+    key: shoulder_joint_speed
+  - format: intle:16
+    key: elbow_joint_position
+  - format: intle:16
+    key: elbow_joint_speed
+  - format: intle:16
+    key: wrist_joint_1_position
+  - format: intle:16
+    key: wrist_joint_1_speed
+  - format: intle:16
+    key: wrist_joint_2_position
+  - format: intle:16
+    key: wrist_joint_2_speed
 jointControl:
   description: 工程机械臂数据
   id: 1030
